@@ -3,7 +3,11 @@ from window import ThresholdWindow
 import numpy as np
 import cv2 
 
-# Open up your webcam to read from
+# open up benchmark image
+benchmark = cv2.imread("./benchmark.png")
+hsv_benchmark = cv2.cvtColor(benchmark, cv2.COLOR_BGR2HSV)
+
+# open up your webcam to read from
 webcam = cv2.VideoCapture(0)
 
 # make sliders for thresholds
@@ -35,9 +39,12 @@ while display.is_open():
         cv2.drawContours(frame, [largest], -1, 255, 3)
         cv2.drawContours(binary_frame, [largest], -1, 255, 3)
 
+    # threshold benchmark image
+    binary_benchmark = cv2.inRange(hsv_benchmark, display.min_thresholds(), display.max_thresholds())
+    cv2.imshow("Benchmark Test", cv2.bitwise_and(benchmark, benchmark, mask=binary_benchmark))
+
     # display images
-    combined_frame = cv2.hconcat([frame,binary_frame])
-    display.imshow(combined_frame)
+    display.imshow(cv2.hconcat([frame, binary_frame]))
     
     # quit if the q key is pressed
     if cv2.waitKey(20) & 0xFF == ord('q'):
