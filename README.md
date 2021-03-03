@@ -12,6 +12,8 @@ It is currently just a couple of python scripts, but it may expand in the future
 
 To run, make sure no other application is using you webcam.
 
+Before running, make sure to install opencv by running `pip install opencv-python`
+
 Then, it git bash run `./run.sh` in the project directory.
 
 If this does not work, go into the `./src/` folder and run:
