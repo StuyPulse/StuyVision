@@ -1,3 +1,3 @@
 #!/bin/sh
 cd ./src
-py ./main.py
+python3 ./main.py
