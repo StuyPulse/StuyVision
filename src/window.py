@@ -1,6 +1,9 @@
 import numpy as np
 import cv2 
 
+def nothing(x):
+    pass
+
 # Window that helps manage an OpenCV window and treshold values
 class ThresholdWindow:
 
@@ -28,14 +31,23 @@ class ThresholdWindow:
         cv2.createTrackbar('Sat Max', self._window_name, 0, 255, self._check_min('Sat Min'))
         cv2.createTrackbar('Val Min', self._window_name, 0, 255, self._check_max('Val Max'))
         cv2.createTrackbar('Val Max', self._window_name, 0, 255, self._check_min('Val Min'))
+        cv2.createTrackbar('Erode', self._window_name, 1, 50, nothing)
+        cv2.createTrackbar('Dilate', self._window_name, 1, 50, nothing)
         self._set_bar('Hue Min', 000)
         self._set_bar('Hue Max', 180)
         self._set_bar('Sat Min', 000)
         self._set_bar('Sat Max', 255)
         self._set_bar('Val Min', 000)
         self._set_bar('Val Max', 255)
-        
+        self._set_bar('Erode', 1)
+        self._set_bar('Dilate', 1)
     
+    def get_erode_size(self):
+        return self._get_bar('Erode')
+
+    def get_dilate_size(self):
+        return self._get_bar('Dilate')
+
     def min_thresholds(self):
         return (self._get_bar('Hue Min'), self._get_bar('Sat Min'), self._get_bar('Val Min'))
         

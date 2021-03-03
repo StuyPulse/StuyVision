@@ -21,7 +21,15 @@ while display.is_open():
     # convert to HSV then to Binary
     hsv_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     binary_frame = cv2.inRange(hsv_frame, display.min_thresholds(), display.max_thresholds())
-    
+
+    # erode and dilate the images
+    erode_level = display.get_erode_size()
+    dilate_level = display.get_dilate_size()
+    erode_kernel = np.ones((erode_level, erode_level), np.uint8)
+    dilate_kernel = np.ones((dilate_level, dilate_level), np.uint8)
+    binary_frame = cv2.erode(binary_frame, erode_kernel)
+    binary_frame = cv2.dilate(binary_frame, dilate_kernel)
+
     # use opencv to find contours
     contours, _ = cv2.findContours(binary_frame, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
