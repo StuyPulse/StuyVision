@@ -21,7 +21,7 @@ class ThresholdWindow:
     # constructor to create window
     def __init__(self, name):
         self._window_name = name
-        cv2.namedWindow(self._window_name)
+        cv2.namedWindow(self._window_name, cv2.WINDOW_AUTOSIZE)
         cv2.createTrackbar('Hue Min', self._window_name, 0, 180, self._check_max('Hue Max'))
         cv2.createTrackbar('Hue Max', self._window_name, 0, 180, self._check_min('Hue Min'))
         cv2.createTrackbar('Sat Min', self._window_name, 0, 255, self._check_max('Sat Max'))
