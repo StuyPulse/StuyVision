@@ -16,8 +16,8 @@ Then, it git bash run `./run.sh` in the project directory.
 
 If this does not work, go into the `./src/` folder and run:
 
-    - `python ./main.py`
-    - `python3 ./main.py`
-    - `py ./main.py`
+- `python ./main.py`
+- `python3 ./main.py`
+- `py ./main.py`
 
 Try all of these as one may work and others will not/
