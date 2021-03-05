@@ -1,7 +1,9 @@
 from window import ThresholdWindow
 
+import os
 import numpy as np
 import cv2 
+from random import random
 
 # open up benchmark image
 benchmark = cv2.imread("./benchmark.png")
@@ -9,6 +11,19 @@ hsv_benchmark = cv2.cvtColor(benchmark, cv2.COLOR_BGR2HSV)
 
 # open up your webcam to read from
 webcam = cv2.VideoCapture(0)
+
+# all of the things to play
+DIRECTORY = './haarcascades/'
+cascades = []
+for filename in os.listdir(DIRECTORY):
+    file = DIRECTORY + filename
+    try:
+        cascade = [ ((random() * 255, random() * 255, random() * 255), cv2.CascadeClassifier(file)) ]
+        cascades += cascade
+        print(file + " is set to color: " + str(cascade[0]))
+    except Exception as e:
+        print(file + " failed to open")
+        pass
 
 # make sliders for thresholds
 display = ThresholdWindow("OpenCV Example")
@@ -21,6 +36,15 @@ while display.is_open():
     # convert to HSV then to Binary
     hsv_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     binary_frame = cv2.inRange(hsv_frame, display.min_thresholds(), display.max_thresholds())
+
+    # cascades
+    if(display.get_cascades()):
+        gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        
+        for color, cascade in cascades:
+            objects = cascade.detectMultiScale(gray_frame, 1.3, 5)
+            for (x,y,w,h) in objects:
+                frame = cv2.rectangle(frame, (x,y), (x+w,y+h), color, 2)
 
     # erode and dilate the images
     erode_level = display.get_erode_size()
