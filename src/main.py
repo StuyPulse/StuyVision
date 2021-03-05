@@ -18,9 +18,14 @@ cascades = []
 for filename in os.listdir(DIRECTORY):
     file = DIRECTORY + filename
     try:
-        cascade = [ ((random() * 255, random() * 255, random() * 255), cv2.CascadeClassifier(file)) ]
+        # nickname for cascade file 
+        realname = os.path.basename(filename)
+        realname = filename.replace('.xml', '')
+        realname = filename.replace('_', ' ')
+        realname = realname.replace('haarcascade', '')
+
+        cascade = [ (0, 255, 0), realname, cv2.CascadeClassifier(file)) ]
         cascades += cascade
-        print(file + " is set to color: " + str(cascade[0]))
     except Exception as e:
         print(file + " failed to open")
         pass
@@ -41,9 +46,10 @@ while display.is_open():
     if(display.get_cascades()):
         gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         
-        for color, cascade in cascades:
+        for color, name, cascade in cascades:
             objects = cascade.detectMultiScale(gray_frame, 1.3, 5)
             for (x,y,w,h) in objects:
+                frame = cv2.putText(frame, name, (x, y), cv2.FONT_HERSHEY_SIMPLEX, 1, color, 1, cv2.LINE_AA) 
                 frame = cv2.rectangle(frame, (x,y), (x+w,y+h), color, 2)
 
     # erode and dilate the images
