@@ -20,11 +20,11 @@ for filename in os.listdir(DIRECTORY):
     try:
         # nickname for cascade file 
         realname = os.path.basename(filename)
-        realname = filename.replace('.xml', '')
-        realname = filename.replace('_', ' ')
+        realname = os.path.splitext(realname)[0]
+        realname = realname.replace('_', ' ')
         realname = realname.replace('haarcascade', '')
 
-        cascade = [ (0, 255, 0), realname, cv2.CascadeClassifier(file)) ]
+        cascade = [ ((0, 255, 0), realname, cv2.CascadeClassifier(file)) ]
         cascades += cascade
     except Exception as e:
         print(file + " failed to open")
